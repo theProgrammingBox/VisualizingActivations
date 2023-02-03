@@ -68,7 +68,7 @@ public:
 			{
 				for (uint32_t i = ScreenWidth(); i--;)
 				{
-					uint32_t height = (1 - data[idx++]) * 999;
+					uint32_t height = (1 - data[idx++]) * ScreenHeight();
 					if ((mode == 3) || (mode == activation))
 						Draw(ScreenWidth() - i, height, color);
 				}
