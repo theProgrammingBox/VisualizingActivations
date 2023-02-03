@@ -21,6 +21,8 @@ public:
 	uint32_t RUNS;
 	float* data;
 
+	uint32_t mode;
+
 	Visualizer(uint32_t activations, uint32_t runs, float* data)
 	{
 		sAppName = "Probability Visualizer";
@@ -32,12 +34,18 @@ public:
 public:
 	bool OnUserCreate() override
 	{
+		mode = 3;
 		return true;
 	}
 
 	bool OnUserUpdate(float fElapsedTime) override
 	{
 		Clear(Pixel(0, 0, 0));
+		
+		if (GetKey(olc::UP).bPressed) mode++;
+		if (GetKey(olc::DOWN).bPressed) mode--;
+		mode -= (mode == 4) * 4;
+		mode += (mode == -1) * 4;
 
 		uint32_t idx = 0;
 		for (uint32_t activation = ACTIVATIONS; activation--;)
@@ -61,7 +69,8 @@ public:
 				for (uint32_t i = ScreenWidth(); i--;)
 				{
 					uint32_t height = (1 - data[idx++]) * 999;
-					Draw(ScreenWidth() - i, height, color);
+					if ((mode == 3) || (mode == activation))
+						Draw(ScreenWidth() - i, height, color);
 				}
 			}
 		}
