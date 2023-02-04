@@ -51,6 +51,9 @@ public:
 			case 2:
 				color = Pixel(0, 0, 255);
 				break;
+			case 3:
+				color = Pixel(255, 255, 0);
+				break;
 			}
 
 			for (uint32_t run = RUNS; run--;)
@@ -58,7 +61,7 @@ public:
 				for (uint32_t i = ScreenWidth(); i--;)
 				{
 					uint32_t height = (1 - data[idx++]) * ScreenHeight();
-					if ((mode == 3) || (mode == activation))
+					if ((mode == ACTIVATIONS) || (mode == activation))
 						Draw(ScreenWidth() - i, height, color);
 				}
 			}
@@ -67,7 +70,7 @@ public:
 	
 	bool OnUserCreate() override
 	{
-		mode = 3;
+		mode = ACTIVATIONS;
 		Render();
 		
 		return true;
@@ -78,13 +81,13 @@ public:
 		if (GetKey(olc::UP).bPressed)
 		{
 			mode++;
-			mode -= (mode == 4) * 4;
+			mode -= (mode == ACTIVATIONS + 1) * (ACTIVATIONS + 1);
 			Render();
 		}
 		if (GetKey(olc::DOWN).bPressed)
 		{
 			mode--;
-			mode += (mode == -1) * 4;
+			mode += (mode == -1) * (ACTIVATIONS + 1);
 			Render();
 		}
 
