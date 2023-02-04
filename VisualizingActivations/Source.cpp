@@ -32,20 +32,9 @@ public:
 	}
 
 public:
-	bool OnUserCreate() override
-	{
-		mode = 3;
-		return true;
-	}
-
-	bool OnUserUpdate(float fElapsedTime) override
+	void Render()
 	{
 		Clear(Pixel(0, 0, 0));
-		
-		if (GetKey(olc::UP).bPressed) mode++;
-		if (GetKey(olc::DOWN).bPressed) mode--;
-		mode -= (mode == 4) * 4;
-		mode += (mode == -1) * 4;
 
 		uint32_t idx = 0;
 		for (uint32_t activation = ACTIVATIONS; activation--;)
@@ -73,6 +62,30 @@ public:
 						Draw(ScreenWidth() - i, height, color);
 				}
 			}
+		}
+	}
+	
+	bool OnUserCreate() override
+	{
+		mode = 3;
+		Render();
+		
+		return true;
+	}
+
+	bool OnUserUpdate(float fElapsedTime) override
+	{
+		if (GetKey(olc::UP).bPressed)
+		{
+			mode++;
+			mode -= (mode == 4) * 4;
+			Render();
+		}
+		if (GetKey(olc::DOWN).bPressed)
+		{
+			mode--;
+			mode += (mode == -1) * 4;
+			Render();
 		}
 
 		return true;
