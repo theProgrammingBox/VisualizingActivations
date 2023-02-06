@@ -104,7 +104,7 @@ int main()
 	uint32_t SIZE;
 	float* data;
 
-	ifstream file("data.txt", ios::binary | ios::in);
+	ifstream file("data.txt", ios::in | ios::binary);
 	file.read((char*)&ACTIVATIONS, sizeof(uint32_t));
 	file.read((char*)&RUNS, sizeof(uint32_t));
 	file.read((char*)&ITERATIONS, sizeof(uint32_t));
@@ -112,9 +112,6 @@ int main()
 
 	data = new float[SIZE];
 	file.read((char*)data, SIZE * sizeof(float));
-
-	/*for (int i = 0; i < SIZE; i++)
-		cout << data[i] << '\n';*/
 
 	file.close();
 
