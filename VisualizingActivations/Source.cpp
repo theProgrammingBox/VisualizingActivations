@@ -61,7 +61,7 @@ public:
 			{
 				for (uint32_t i = ScreenWidth(); i--;)
 				{
-					uint32_t height = (1 - data[idx++]) * ScreenHeight();
+					uint32_t height = data[idx++] * 0.018f * ScreenHeight();
 					if ((mode == ACTIVATIONS) || (mode == activation))
 						Draw(ScreenWidth() - i, height, color);
 				}
@@ -105,7 +105,8 @@ int main()
 	float* data;
 
 	ifstream file("data.txt", ios::in | ios::binary);
-	file.read((char*)&ACTIVATIONS, sizeof(uint32_t));
+	//file.read((char*)&ACTIVATIONS, sizeof(uint32_t));
+	ACTIVATIONS = 1;
 	file.read((char*)&RUNS, sizeof(uint32_t));
 	file.read((char*)&ITERATIONS, sizeof(uint32_t));
 	SIZE = ACTIVATIONS * RUNS * ITERATIONS;
