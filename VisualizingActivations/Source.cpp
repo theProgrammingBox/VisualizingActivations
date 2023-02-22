@@ -10,6 +10,7 @@ using std::chrono::nanoseconds;
 using std::chrono::microseconds;
 using std::cout;
 using std::ifstream;
+using std::ios;
 using std::max;
 
 using olc::Pixel;
@@ -103,16 +104,14 @@ int main()
 	uint32_t SIZE;
 	float* data;
 
-	ifstream file("data.txt");
-	file >> ACTIVATIONS >> RUNS >> ITERATIONS;
+	ifstream file("data.txt", ios::in | ios::binary);
+	file.read((char*)&ACTIVATIONS, sizeof(uint32_t));
+	file.read((char*)&RUNS, sizeof(uint32_t));
+	file.read((char*)&ITERATIONS, sizeof(uint32_t));
 	SIZE = ACTIVATIONS * RUNS * ITERATIONS;
 
 	data = new float[SIZE];
-	for (int i = 0; i < SIZE; i++)
-		file >> data[i];
-
-	/*for (int i = 0; i < SIZE; i++)
-		cout << data[i] << '\n';*/
+	file.read((char*)data, SIZE * sizeof(float));
 
 	file.close();
 
