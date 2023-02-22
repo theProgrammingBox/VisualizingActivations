@@ -118,7 +118,7 @@ int main()
 
 	uint32_t totalXElements = ITERATIONS;
 	uint32_t xPixels = 1920 / totalXElements;
-	uint32_t totalYElements = 1000;
+	uint32_t totalYElements = 999;
 	uint32_t yPixels = 1080 / totalYElements;
 
 	Visualizer visualizer(ACTIVATIONS, RUNS, data);
