@@ -21,6 +21,7 @@ public:
 	uint32_t ACTIVATIONS;
 	uint32_t RUNS;
 	float* data;
+	float* density;
 
 	uint32_t mode;
 
@@ -35,7 +36,7 @@ public:
 public:
 	void Render()
 	{
-		Clear(Pixel(0, 0, 0));
+		Clear(olc::WHITE);
 
 		uint32_t idx = 0;
 		for (uint32_t activation = ACTIVATIONS; activation--;)
@@ -59,19 +60,31 @@ public:
 
 			for (uint32_t run = RUNS; run--;)
 			{
+				uint32_t height = 0;
 				for (uint32_t i = ScreenWidth(); i--;)
 				{
-					uint32_t height = data[idx++] * 0.018f * ScreenHeight();
+					uint32_t pheight = height;
+					height = data[idx++] * 0.018f * ScreenHeight();
 					if ((mode == ACTIVATIONS) || (mode == activation))
-						Draw(ScreenWidth() - i, height, color);
+						DrawLine(ScreenWidth() - i - 1, pheight, ScreenWidth() - i, height, color);
 				}
+				density[height]++;
 			}
+		}
+		
+		// draw the density
+		for (uint32_t i = ScreenHeight(); i--;)
+		{
+			DrawLine(ScreenWidth() - density[i + 1] * 10, i, ScreenWidth() - density[i] * 10, i, Pixel(0, 0, 0));
+			DrawLine(ScreenWidth(), i, ScreenWidth() - density[i] * 10, i, Pixel(0, 0, 0));
 		}
 	}
 	
 	bool OnUserCreate() override
 	{
 		mode = ACTIVATIONS;
+		density = new float[ScreenHeight()];
+		memset(density, 0, ScreenHeight() * sizeof(float));
 		Render();
 		
 		return true;
@@ -117,9 +130,9 @@ int main()
 	file.close();
 
 	uint32_t totalXElements = ITERATIONS;
-	uint32_t xPixels = 1920 / totalXElements;
-	uint32_t totalYElements = 999;
-	uint32_t yPixels = 1080 / totalYElements;
+	uint32_t xPixels = 1620 / totalXElements;
+	uint32_t totalYElements = 900;
+	uint32_t yPixels = 900 / totalYElements;
 
 	Visualizer visualizer(ACTIVATIONS, RUNS, data);
 	if (visualizer.Construct(totalXElements, totalYElements, xPixels, yPixels))
